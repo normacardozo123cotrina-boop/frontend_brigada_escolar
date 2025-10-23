@@ -2,27 +2,25 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const padres = ref([]);
+const cursos = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/padres"); // Ajusta tu endpoint
-    padres.value = response.data;
+    const response = await axios.get("http://localhost:8000/api/cursos"); // Ajusta tu endpoint
+    cursos.value = response.data;
   } catch (err) {
-    console.error("Error al cargar los padres:", err);
+    console.error("Error al cargar los cursos:", err);
   }
 });
 </script>
 
 <template>
   <div class="container">
-    <h1>Padres</h1>
+    <h1>Cursos</h1>
     <div class="cards-container">
-      <div v-for="padre in padres" :key="padre.id" class="card">
-        <h2>{{ padre.nombre }} {{ padre.apellido }}</h2>
-        <p><strong>Usuario:</strong> {{ padre.user.name }}</p>
-        <p><strong>Email:</strong> {{ padre.user.email }}</p>
-        <p><strong>Contacto:</strong> {{ padre.numero }}</p>
+      <div v-for="curso in cursos" :key="curso.id" class="card">
+        <h2>{{ curso.nombre }}</h2>
+        <p><strong>Asesor:</strong> {{ curso.nombre_asesor }}</p>
       </div>
     </div>
   </div>
@@ -54,7 +52,7 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 20px;
-  width: 280px;
+  width: 250px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
@@ -74,6 +72,5 @@ h1 {
 .card p {
   font-size: 0.95rem;
   color: #555;
-  margin: 5px 0;
 }
 </style>

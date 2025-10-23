@@ -1,21 +1,36 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 import LoginLayout from "../layouts/LoginLayout.vue";
 
 const router = useRouter();
 const error = ref("");
 const form = ref({
-  username: "",
+  email: "",
   password: "",
 });
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  error.value = "";
+
   try {
+    const response = await axios.post("http://localhost:8000/api/login", {
+      email: form.value.email, 
+      password: form.value.password,
+    });
+
+    console.log("Login exitoso:", response.data);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
+
     router.push("/");
   } catch (err) {
-    error.value = "Usuario o contraseña incorrectos";
+    if (err.response && err.response.data && err.response.data.message) {
+      error.value = err.response.data.message;
+    } else {
+      error.value = "Usuario o contraseña incorrectos";
+    }
   }
 };
 </script>
@@ -24,24 +39,26 @@ const handleSubmit = async (e) => {
   <LoginLayout>
     <div class="login-container">
       <div class="login-card">
-        <h2 class="title">Bienvenido</h2>
+        <h2 class="title">Bienvenido a Brigada Escolar</h2>
         <p class="subtitle">Inicia sesión para continuar</p>
 
         <p v-if="error" class="error-message">{{ error }}</p>
-
+        <br>
         <form @submit.prevent="handleSubmit" class="login-form">
           <div class="input-group">
-            <label for="username">Usuario</label>
+            <label for="email">Email</label>
+            <br>
             <input
-              id="username"
+              id="email"
               type="text"
-              v-model="form.username"
+              v-model="form.email"
               placeholder="ejemplo123"
               required
             />
           </div>
 
           <div class="input-group">
+            <hr>
             <label for="password">Contraseña</label>
             <input
               id="password"
@@ -51,13 +68,14 @@ const handleSubmit = async (e) => {
               required
             />
           </div>
+          <br>
 
           <button class="login-button">Ingresar</button>
         </form>
 
         <div class="extra-links">
           <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-          <p class="no-account">¿No tienes cuenta? <a href="#">Regístrate</a></p>
+          <!-- <p class="no-account">¿No tienes cuenta? <a href="#">Regístrate</a></p> -->
         </div>
       </div>
     </div>

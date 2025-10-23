@@ -2,27 +2,30 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const padres = ref([]);
+const faltas = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/padres"); // Ajusta tu endpoint
-    padres.value = response.data;
+    const response = await axios.get("http://localhost:8000/api/faltas-graves");
+    faltas.value = response.data;
   } catch (err) {
-    console.error("Error al cargar los padres:", err);
+    console.error("Error al cargar las faltas:", err);
   }
 });
 </script>
 
 <template>
   <div class="container">
-    <h1>Padres</h1>
+    <h1>Sanciones y Faltas</h1>
     <div class="cards-container">
-      <div v-for="padre in padres" :key="padre.id" class="card">
-        <h2>{{ padre.nombre }} {{ padre.apellido }}</h2>
-        <p><strong>Usuario:</strong> {{ padre.user.name }}</p>
-        <p><strong>Email:</strong> {{ padre.user.email }}</p>
-        <p><strong>Contacto:</strong> {{ padre.numero }}</p>
+      <div v-for="falta in faltas" :key="falta.id" class="card">
+        <h2>{{ falta.estudiante.nombre }} {{ falta.estudiante.apellido }}</h2>
+        <p><strong>Curso:</strong> {{ falta.estudiante.curso.nombre }}</p>
+        <p><strong>Tipo de falta:</strong> {{ falta.tipo_falta.nombre }}</p>
+        <p><strong>Sanción:</strong> {{ falta.tipo_falta.sancion.descripcion }}</p>
+        <p><strong>Descripción:</strong> {{ falta.descripcion }}</p>
+        <p><strong>Estado:</strong> {{ falta.estado }}</p>
+        <p><strong>Fecha:</strong> {{ falta.fecha }}</p>
       </div>
     </div>
   </div>
@@ -54,10 +57,9 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 20px;
-  width: 280px;
+  width: 300px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
 }
 
 .card:hover {

@@ -9,9 +9,9 @@
 <style scoped>
 .login-layout {
   display: flex;
-  justify-content: center; /*centra horizontalmente */
-  align-items: center;     /*centra verticalmente */
-  height: 100vh;           /*ocupa toda la altura de la ventana */
+  justify-content: center; 
+  align-items: center;     
+  height: 100vh;         
   width: 100%;
   padding: 20px;           
   background-color: none;

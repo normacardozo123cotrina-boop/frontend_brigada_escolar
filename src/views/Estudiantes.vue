@@ -2,27 +2,27 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const padres = ref([]);
+const estudiantes = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/padres"); // Ajusta tu endpoint
-    padres.value = response.data;
+    const response = await axios.get("http://localhost:8000/api/estudiantes"); // Ajusta tu endpoint
+    estudiantes.value = response.data;
   } catch (err) {
-    console.error("Error al cargar los padres:", err);
+    console.error("Error al cargar los estudiantes:", err);
   }
 });
 </script>
 
 <template>
   <div class="container">
-    <h1>Padres</h1>
+    <h1>Estudiantes</h1>
     <div class="cards-container">
-      <div v-for="padre in padres" :key="padre.id" class="card">
-        <h2>{{ padre.nombre }} {{ padre.apellido }}</h2>
-        <p><strong>Usuario:</strong> {{ padre.user.name }}</p>
-        <p><strong>Email:</strong> {{ padre.user.email }}</p>
-        <p><strong>Contacto:</strong> {{ padre.numero }}</p>
+      <div v-for="estudiante in estudiantes" :key="estudiante.id" class="card">
+        <h2>{{ estudiante.nombre }} {{ estudiante.apellido }}</h2>
+        <p><strong>Curso:</strong> {{ estudiante.curso.nombre }}</p>
+        <p><strong>Padre:</strong> {{ estudiante.padre.nombre }} {{ estudiante.padre.apellido }}</p>
+        <p><strong>Contacto:</strong> {{ estudiante.numero }}</p>
       </div>
     </div>
   </div>
